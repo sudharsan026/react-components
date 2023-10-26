@@ -5,12 +5,10 @@ import Table from "./Table";
 
 const App = () => {
   const [query, setQuery] = useState("");
+  const keys = ["name", "username", "email"];
   const searchData = (data) => {
-    return data.filter(
-      (item) =>
-        item.name.toLowerCase().includes(query) ||
-        item.username.toLowerCase().includes(query) ||
-        item.email.toLowerCase().includes(query)
+    return data.filter((item) =>
+      keys.some((key) => item[key].toLowerCase().includes(query))
     );
   };
   return (
