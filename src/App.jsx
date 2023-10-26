@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
-import Card from "./Card";
+import React, { useState } from "react";
+import "./App.css";
+import { Users } from "./users";
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch("https://jsonplaceholder.typicode.com/users");
-      const data = await result.json();
-      setUsers(data);
-    };
-    fetchData();
-  }, []);
-
+  const [query, setQuery] = useState("");
+  console.log(Users.filter((user) => user.name.toLowerCase().includes("d")));
   return (
-    <ul>
-      {users.map((user) => (
-        <Card cardTitle={user.name} cardDes={user.email} />
-      ))}
-    </ul>
+    <div className="app">
+      <input
+        className="search"
+        type="text"
+        placeholder="Search.."
+        onChange={(e) => setQuery(e.target.value)}
+      ></input>
+      <ul className="list">
+        {Users.filter((users) => users.name.toLowerCase().includes(query)).map(
+          (users) => (
+            <li className="list-item" key={users.id}>
+              {users.name}
+            </li>
+          )
+        )}
+      </ul>
+    </div>
   );
 };
 
