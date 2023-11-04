@@ -1,40 +1,26 @@
-import React, { useState } from "react";
-import ExpenseTable from "./expense-tracker/components/expense-table";
-import ExpenseFilter from "./expense-tracker/components/expense-filter";
-import ExpenseForm from "./expense-tracker/components/expense-form";
-import "./App.css";
-const App = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "Toyota", amount: 5000, category: "transportation" },
-    { id: 2, description: "Anna", amount: 7000, category: "hotel" },
-    { id: 3, description: "Trivandrum", amount: 10000, category: "zoo" },
-  ]);
-  const visibleExpenses = selectedCategory
-    ? expenses.filter((expense) => expense.category === selectedCategory)
-    : expenses;
+import React from "react";
+import AutoComplete from "./AutoComplete.jsx";
+
+const suggestions = [
+  "Apple",
+  "Banana",
+  "Cherry",
+  "Date",
+  "Grapes",
+  "Lemon",
+  "Mango",
+  "Orange",
+  "Peach",
+  "Pineapple",
+];
+
+function App() {
   return (
-    <>
-      <div className="mb-3">
-        <ExpenseForm
-          onSubmit={(data) =>
-            setExpenses([...expenses, { ...data, id: expenses.length + 1 }])
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <ExpenseFilter onSelect={(e) => setSelectedCategory(e.target.value)} />
-      </div>
-      <div className="mb-3">
-        <ExpenseTable
-          onDelete={(id) =>
-            setExpenses(expenses.filter((expense) => expense.id !== id))
-          }
-          expenses={visibleExpenses}
-        />
-      </div>
-    </>
+    <div className="App">
+      <h1>Autocomplete</h1>
+      <AutoComplete suggestions={suggestions} />
+    </div>
   );
-};
+}
 
 export default App;
