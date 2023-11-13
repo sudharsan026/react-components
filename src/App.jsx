@@ -1,65 +1,88 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import { useState } from "react";
 
-const ImageUploader = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+const App = () => {
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   age: "",
+  //   email: "",
+  //   password: "",
+  //   address: "",
+  // });
+  const [formData, setFormData] = useState([]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
-
-  const uploadImage = () => {
-    if (!selectedFile) {
-      toast.error("Please select an image");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", selectedFile);
-
-    axios
-      .post("/upload-endpoint", formData, {
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setUploadProgress(percentCompleted);
-        },
-      })
-      .then(() => {
-        toast.success("Image uploaded successfully");
-        // Additional logic after successful upload
-      })
-      .catch((error) => {
-        toast.error("Error uploading image");
-        console.error(error);
-      });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
   };
-
   return (
-    <div>
-      <input type="file" onChange={handleFileChange} accept="image/*" />
-      <button onClick={uploadImage}>Upload Image</button>
-
-      {uploadProgress > 0 && (
-        <div>
-          <p>Upload Progress: {uploadProgress}%</p>
-          <div
-            style={{
-              width: `${uploadProgress}%`,
-              height: "10px",
-              background: "#00b09b",
-            }}
-          ></div>
-        </div>
-      )}
-
-      <ToastContainer />
-    </div>
+    <form className="form px-5" onSubmit={handleSubmit}>
+      <div className="mb-3 mt-3">
+        <label htmlFor="name" className="form-label">
+          Name
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          name="name"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3 mt-3">
+        <label htmlFor="age" className="form-label">
+          Age
+        </label>
+        <input
+          type="number"
+          className="form-control"
+          name="age"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3 mt-3">
+        <label htmlFor="email" className="form-label">
+          email
+        </label>
+        <input
+          type="email"
+          className="form-control"
+          name="email"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3 mt-3">
+        <label htmlFor="password" className="form-label">
+          Password
+        </label>
+        <input
+          type="password"
+          className="form-control"
+          name="password"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3 mt-3">
+        <label htmlFor="address" className="form-label">
+          Address
+        </label>
+        <textarea
+          type="address"
+          className="form-control"
+          name="address"
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3 mt-3">
+        <button className="btn btn-primary">Submit</button>
+      </div>
+    </form>
   );
 };
 
-export default ImageUploader;
+export default App;
