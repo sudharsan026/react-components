@@ -1,16 +1,20 @@
 import React from "react";
-import "./card.css";
+import "./Card.css";
 const Card = (props) => {
-  const { cardTitle, cardDes, key } = props;
+  const { cardData } = props;
   return (
-    <div className="card" key={key}>
-      <img
-        className="card-image"
-        src="https://placehold.co/200x200"
-        alt="Loading"
-      />
-      <h2 className="card-title">{cardTitle}</h2>
-      <p className="card-text">{cardDes}</p>
+    <div className="card-container">
+      {cardData.map((_card) => (
+        <div className="card" key={_card.id}>
+          <img
+            className="card-image"
+            src="https://placehold.co/200x200"
+            alt="Loading"
+          />
+          <h2 className="card-title">{_card.name}</h2>
+          <p className="card-text">{_card.website}</p>
+        </div>
+      ))}
     </div>
   );
 };
