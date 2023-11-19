@@ -1,18 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Profile from "./pages/Profile";
-import Home from "./pages/Home";
-const App = () => {
+import { useState } from "react";
+
+function App() {
+  const [file, setFile] = useState();
+  function handleChange(e) {
+    console.log(e.target.files);
+    setFile(URL.createObjectURL(e.target.files[0]));
+  }
+
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </Router>
-    </>
+    <div className="App">
+      <h2>Add Image:</h2>
+      <input type="file" onChange={handleChange} />
+      <img src={file} />
+      <div onClick={() => setFile()}>Close</div>
+    </div>
   );
-};
+}
 
 export default App;
