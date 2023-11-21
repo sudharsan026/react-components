@@ -6,16 +6,24 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const uploadImage = () => {
     setUploading(true);
 
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "preset_name");
+    formData.append("upload_preset", "");
 
     axios
-      .post("https://api.cloudinary.com/v1_1/cloud_name/image/upload", formData)
+      .post("https://api.cloudinary.com/v1_1//image/upload", formData, {
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded / progressEvent.total) * 100
+          );
+          setUploadProgress(progress);
+        },
+      })
       .then((response) => {
         console.log(response);
         toast.success("Image uploaded successfully!");
@@ -41,6 +49,7 @@ const App = () => {
       })
       .finally(() => {
         setUploading(false);
+        setUploadProgress(0);
       });
   };
 
@@ -63,7 +72,12 @@ const App = () => {
       <button onClick={uploadImage} disabled={uploading}>
         {uploading ? "Uploading..." : "Upload Image"}
       </button>
-
+      {uploading && (
+        <div style={{ marginTop: "20px" }}>
+          <progress value={uploadProgress} max={100} />
+          <span style={{ marginLeft: "10px" }}>{uploadProgress}%</span>
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={2000} />
     </div>
   );
