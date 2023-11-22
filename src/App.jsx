@@ -38,6 +38,19 @@ const farr = [
     ],
   },
 ];
+const getTenantFirstName = (id) => {
+  let tenantsNeeded = [];
+  for (let i in tenants) {
+    if (tenants[i].id === id) {
+      tenantsNeeded.push(tenants[i]);
+    }
+  }
+  let tenantNames = tenantsNeeded.map((_tenantName) =>
+    _tenantName.first_name.charAt(0)
+  );
+  console.log(tenantNames);
+  return tenantNames;
+};
 const getTenantName = (id) => {
   let tenantsNeeded = [];
   for (let i in tenants) {
@@ -84,7 +97,35 @@ const FormList = ({ formData }) => (
           <div style={{ display: "flex", gap: "12px" }}>
             {form.tenantID.map((tenant, tenantIndex) => (
               <div key={tenantIndex}>
-                <div
+                <div className="tenant">
+                  <div className="circle">
+                    <div className="mask full">
+                      <div
+                        className={
+                          tenant.status == "new" ? "fill--default" : "fill"
+                        }
+                      ></div>
+                    </div>
+
+                    <div className="mask half">
+                      <div
+                        className={
+                          tenant.status == "new" ? "fill--default" : "fill"
+                        }
+                      ></div>
+                    </div>
+
+                    <div className="inside-circle">
+                      <div className="tenant-letter">
+                        {getTenantFirstName(tenant.tenant_id)}
+                      </div>
+                    </div>
+                    <div className={"tenant-tooltip"}>
+                      {getTenantName(tenant.tenant_id)}
+                    </div>
+                  </div>
+                </div>
+                {/* <div
                   className={
                     tenant.status == "new" ? "tenant" : "tenant-active"
                   }
@@ -93,7 +134,7 @@ const FormList = ({ formData }) => (
                   <div className={"tenant-tooltip"}>
                     {getTenantName(tenant.tenant_id)}
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
