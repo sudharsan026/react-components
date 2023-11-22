@@ -1,84 +1,112 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import "./App.css";
+const tenants = [
+  { first_name: "Vijay", id: "tenant1" },
+  { first_name: "Hema", id: "tenant2" },
+  { first_name: "Yonishsha", id: "tenant3" },
+  { first_name: "Sindhu", id: "tenant4" },
+  { first_name: "Sudharsan", id: "tenant5" },
+];
+const farr = [
+  {
+    formID: "form1",
+    title: "Resident Notification Letter",
+    tenantID: [
+      { tenant_id: "tenant1", status: "new" },
+      { tenant_id: "tenant2", status: "completed" },
+      { tenant_id: "tenant5", status: "completed" },
+    ],
+  },
+  {
+    formID: "form2",
+    title: "Rental Notification Letter",
+    tenantID: [
+      { tenant_id: "tenant1", status: "new" },
+      { tenant_id: "tenant2", status: "completed" },
+      { tenant_id: "tenant3", status: "new" },
+      { tenant_id: "tenant4", status: "completed" },
+      { tenant_id: "tenant5", status: "completed" },
+    ],
+  },
+  {
+    formID: "form3",
+    title: "Employ Letter",
+    tenantID: [
+      { tenant_id: "tenant1", status: "new" },
+      { tenant_id: "tenant2", status: "completed" },
+      { tenant_id: "tenant3", status: "completed" },
+    ],
+  },
+];
+const getTenantName = (id) => {
+  let tenantsNeeded = [];
+  for (let i in tenants) {
+    if (tenants[i].id === id) {
+      tenantsNeeded.push(tenants[i]);
+    }
+  }
+  let tenantNames = tenantsNeeded.map((_tenantName) => _tenantName.first_name);
+  console.log(tenantNames);
+  return tenantNames;
+};
+const navFun = (tenantID, formID) => {
+  console.log(tenantID);
+  console.log(formID);
+};
+const FormList = ({ formData }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "20px",
+    }}
+  >
+    {formData.map((form, index) => (
+      <div
+        key={index}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            boxShadow: "0px 0px 2px 0 rgba(0,0,0,0.6)",
+            marginBottom: "12px",
+            padding: "10px 10px",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+          }}
+        >
+          <div>{form.title}</div>
+          <div style={{ display: "flex", gap: "12px" }}>
+            {form.tenantID.map((tenant, tenantIndex) => (
+              <div key={tenantIndex}>
+                <div
+                  className={
+                    tenant.status == "new" ? "tenant" : "tenant-active"
+                  }
+                  onClick={() => navFun(tenant.tenant_id, form.formID)}
+                >
+                  <div className={"tenant-tooltip"}>
+                    {getTenantName(tenant.tenant_id)}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 const App = () => {
-  const [image, setImage] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-
-  const uploadImage = () => {
-    setUploading(true);
-
-    const formData = new FormData();
-    formData.append("file", image);
-    formData.append("upload_preset", "");
-
-    axios
-      .post("https://api.cloudinary.com/v1_1//image/upload", formData, {
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100
-          );
-          setUploadProgress(progress);
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        toast.success("Image uploaded successfully!");
-        // Handle success, e.g., show success message or update UI
-      })
-      .catch((error) => {
-        console.error("Error uploading image:", error);
-        if (error.response) {
-          // The request was made, but the server responded with a status code
-          // outside the range of 2xx
-          if (error.response.status === 413) {
-            toast.error(
-              "File size is too large. Please choose a smaller file."
-            );
-          } else {
-            toast.error("An error occurred while uploading the image.");
-          }
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          toast.error("An error occurred while uploading the image.");
-        }
-        // Handle error, e.g., show error message or update UI
-      })
-      .finally(() => {
-        setUploading(false);
-        setUploadProgress(0);
-      });
-  };
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "20px",
-      }}
-    >
-      <input
-        type="file"
-        onChange={(event) => {
-          setImage(event.target.files[0]);
-        }}
-      />
-      <button onClick={uploadImage} disabled={uploading}>
-        {uploading ? "Uploading..." : "Upload Image"}
-      </button>
-      {uploading && (
-        <div style={{ marginTop: "20px" }}>
-          <progress value={uploadProgress} max={100} />
-          <span style={{ marginLeft: "10px" }}>{uploadProgress}%</span>
-        </div>
-      )}
-      <ToastContainer position="top-right" autoClose={2000} />
+    <div className="App">
+      <FormList formData={farr} />
     </div>
   );
 };

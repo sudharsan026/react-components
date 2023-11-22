@@ -1,33 +1,42 @@
-/* .app {
-  display: flex;
-  flex-direction: column;
+.App {
+  margin: 12px;
 }
 
-.search {
-  padding: 10px;
-  font-size: 20px;
-  border: transparent;
-  outline: none;
-  margin: auto;
-  box-shadow: 0px 0.5px 0px 0 rgba(0, 0, 0, 0.2);
+.tenant {
+  width: 40px;
+  height: 40px;
+  background: lightgray;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+.tenant-active {
+  width: 40px;
+  height: 40px;
+  background: lightgray;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
+}
+.tenant .tenant-tooltip,
+.tenant-active .tenant-tooltip {
+  position: absolute;
+  background-color: gray;
+  color: white;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 2px;
+  font-size: 12px;
+  bottom: -30px;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-.list {
-  padding: 0;
-  list-style: none;
-  text-align: center;
+.tenant:hover .tenant-tooltip,
+.tenant-active:hover .tenant-tooltip {
+  opacity: 1;
 }
-
-.list-item {
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #444;
-  font-weight: 300;
-} */
-
-* {
-  padding: 2px;
-}
-/* .card-container {
-  display: flex;
-} */
