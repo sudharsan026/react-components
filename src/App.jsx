@@ -1,14 +1,20 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import DragDrop from "./DragDrop";
+import ImageCarousel from "./ImageCarousel";
+import "./App.css"; // You can style it later
+
 const App = () => {
+  const images = [
+    "https://placehold.co/400x400",
+    "https://placehold.co/300x300",
+    "https://placehold.co/200x200",
+    // Add more image URLs as needed
+  ];
+
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div>
-        <DragDrop />
-      </div>
-    </DndProvider>
+    <div className="App">
+      <h1>Image Carousel</h1>
+      <ImageCarousel images={images} />
+    </div>
   );
 };
 
