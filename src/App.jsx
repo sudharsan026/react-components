@@ -1,19 +1,35 @@
-import React from "react";
-import ImageCarousel from "./ImageCarousel";
-import "./App.css"; // You can style it later
-
+import React, { useState } from "react";
+import { users } from "./MockData";
+import TableView from "./TableView";
 const App = () => {
-  const images = [
-    "https://placehold.co/400x400",
-    "https://placehold.co/300x300",
-    "https://placehold.co/200x200",
-    // Add more image URLs as needed
-  ];
-
+  const [query, setQuery] = useState("");
+  const keys = ["first_name", "last_name", "email"];
+  const searchData = (data) => {
+    return data.filter((item) =>
+      keys.some((key) => item[key].toLowerCase().includes(query))
+    );
+  };
+  // const searchData = (data) => {
+  //   return data.filter(
+  //     (_data) =>
+  //       _data.first_name.toLowerCase().includes(query) ||
+  //       _data.last_name.toLowerCase().includes(query) ||
+  //       _data.email.toLowerCase().includes(query)
+  //   );
+  // };
   return (
-    <div className="App">
-      <h1>Image Carousel</h1>
-      <ImageCarousel images={images} />
+    <div style={{ margin: "20px" }}>
+      <label htmlFor="search-bar" className="form-label">
+        Search
+      </label>
+      <input
+        type="text"
+        placeholder="Search..."
+        id="search-bar"
+        className="form-control"
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <TableView tableData={searchData(users)} />
     </div>
   );
 };
