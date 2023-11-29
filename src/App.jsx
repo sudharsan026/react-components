@@ -1,22 +1,18 @@
-import React, { useState } from "react";
-import { users } from "./MockData";
+import React, { useEffect, useState } from "react";
 import TableView from "./TableView";
+import axios from "axios";
 const App = () => {
   const [query, setQuery] = useState("");
-  const keys = ["first_name", "last_name", "email"];
-  const searchData = (data) => {
-    return data.filter((item) =>
-      keys.some((key) => item[key].toLowerCase().includes(query))
-    );
-  };
-  // const searchData = (data) => {
-  //   return data.filter(
-  //     (_data) =>
-  //       _data.first_name.toLowerCase().includes(query) ||
-  //       _data.last_name.toLowerCase().includes(query) ||
-  //       _data.email.toLowerCase().includes(query)
-  //   );
-  // };
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `http://localhost:5000?query=${query.toLowerCase()}`
+      );
+      setData(res.data);
+    };
+    if (query.length === 0 || query.length > 2) fetchData();
+  }, [query]);
   return (
     <div style={{ margin: "20px" }}>
       <label htmlFor="search-bar" className="form-label">
@@ -29,7 +25,7 @@ const App = () => {
         className="form-control"
         onChange={(e) => setQuery(e.target.value)}
       />
-      <TableView tableData={searchData(users)} />
+      <TableView tableData={data} />
     </div>
   );
 };
