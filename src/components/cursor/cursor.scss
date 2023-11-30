@@ -1,0 +1,15 @@
+.large-circle,
+.small-circle {
+  width: 32px;
+  height: 32px;
+  position: fixed;
+  border: 2px solid lightblue;
+  border-radius: 50%;
+  transition: transform 0.1s;
+}
+.small-circle {
+  width: 8px;
+  height: 8px;
+  background-color: lightblue;
+  border-radius: 50%;
+}
